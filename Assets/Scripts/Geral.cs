@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class Geral : MonoBehaviour
 {
@@ -11,36 +12,56 @@ public class Geral : MonoBehaviour
     [SerializeField]
     private Text timeText; //time the player has left to show on screen
 
-    private bool timeRunning=true;
+    private bool timeRunning=true; //variable to make the time count stop when we want or when time is zero
 
     private float minutes;
     private float seconds;
 
+   
+
+    
     // Update is called once per frame
     void Update()
     {
-        if(timeLeft>0 && timeRunning==true) //cheack if there is time left
-        {
-            timeLeft -= Time.deltaTime; //contdown the time the player has left
-           
-        }
-        //convert time to format minutes:seconds
-        minutes = Mathf.FloorToInt(timeLeft / 60); //multiply per 60 to get the minutes
-        seconds = Mathf.FloorToInt(timeLeft % 60); //modular operation to get the seconds
-        timeText.text = string.Format("{0:00}:{1:00}", minutes, seconds); //print the time to the game screen       
+        CountAndPrintTime(); //calling method to cont and pritn to the scrren the time
         
-        if( timeLeft <= 0f && timeRunning == true) //when time is 0 
-        {
-            //Game Over
-            timeRunning = false; //bool variable to make it only run once
-            timeLeft = 0f;
-            GameOver();
-        }
     }
 
-    private void GameOver() //actions to run when the player dies
+    //method to count and print to unity the time remaining
+   private void CountAndPrintTime()
     {
+        //count the time
+        if(timeRunning == true) //check if time is still running
+        {
+            if (timeLeft > 0) //check if there is time left
+            {
+                timeLeft -= Time.deltaTime; //contdown the time the player has left
+
+            }
+            else
+            {
+                timeRunning = false; //bool variable to make it only run once
+                timeLeft = 0f;
+                GameOver(); //call method that runs when player dies
+            }
+        }
         
-        Debug.Log("Game Over!)");
+        //convert time to format minutes:seconds and print
+        minutes = Mathf.FloorToInt(timeLeft / 60); //multiply per 60 to get the minutes
+        seconds = Mathf.FloorToInt(timeLeft % 60); //modular operation by 60 to get the seconds
+        timeText.text = string.Format("{0:00}:{1:00}", minutes, seconds); //print the time to the game screen in the format 00:00   
+    }
+    public void GameOver() //actions to run when the player dies
+    {
+        //stop counting time
+        timeRunning = false;
+        timeLeft = 0f;
+
+        //set lives to 0
+        GameObject.FindGameObjectWithTag("Player").GetComponent<Player>().lives = 0;
+
+        // game over sscene
+        SceneManager.LoadScene("GameOver");
+        
     }
 }
