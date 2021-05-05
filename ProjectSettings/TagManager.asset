@@ -7,6 +7,8 @@ TagManager:
   - PoisonousPlant
   - Set
   - Button
+  - WeaponPart
+  - HealthKit
   layers:
   - Default
   - TransparentFX
