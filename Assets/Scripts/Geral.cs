@@ -12,7 +12,12 @@ public class Geral : MonoBehaviour
     [SerializeField]
     private Text timeText; //time the player has left to show on screen
 
+    [SerializeField]
+    private float releaseGasTime = 30f; //whem player has this time left gas is released to kill them
+
     private bool timeRunning=true; //variable to make the time count stop when we want or when time is zero
+
+    private bool gasReleased = false; // variable to know if the gas has already been released
 
     private float minutes;
     private float seconds;
@@ -23,8 +28,9 @@ public class Geral : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        CountAndPrintTime(); //calling method to cont and pritn to the scrren the time
-        
+        CountAndPrintTime(); //calling method to cont and print to the scrren the time
+
+               
     }
 
     //method to count and print to unity the time remaining
@@ -33,6 +39,11 @@ public class Geral : MonoBehaviour
         //count the time
         if(timeRunning == true) //check if time is still running
         {
+            if(timeLeft < releaseGasTime && gasReleased == false) //time when gas is realeased
+            {
+                gasReleased = true; //only runs once
+                //code to release the gas
+            }
             if (timeLeft > 0) //check if there is time left
             {
                 timeLeft -= Time.deltaTime; //contdown the time the player has left
@@ -59,6 +70,9 @@ public class Geral : MonoBehaviour
 
         //set lives to 0
         GameObject.FindGameObjectWithTag("Player").GetComponent<Player>().lives = 0;
+
+        //stop the movement
+        //Time.timeScale = 0f;
 
         // game over sscene
         SceneManager.LoadScene("GameOver");

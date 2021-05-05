@@ -38,6 +38,7 @@ public class Player : MonoBehaviour
             if (lives <= 0)
             {
                 GameObject.FindGameObjectWithTag("Set").GetComponent<Geral>().GameOver(); //start Game OVer method when palyer has no lives left
+                
             }
         }
         //player touches a weapon part and collects it. THERE ARE ONLY 3 PARTS IN THE LABIRYNTH AND THE PLAYER HAS TO CATCH THEM ALL  
