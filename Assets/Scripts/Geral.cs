@@ -69,11 +69,9 @@ public class Geral : MonoBehaviour
             if (timeLeft > 0f) //check if there is time left
             {
                 timeLeft = timeLeft - Time.deltaTime; //contdown the time the player has left
-                Debug.Log(timeLeft);
             }
             if(timeLeft <= 0f)
             {
-                Debug.Log("Acabou o tempo!");
                 timeRunning = false; //bool variable to make it only run once
                 timeLeft = 0f;
                 GameOver(); //call method that runs when player dies
