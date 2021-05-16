@@ -18,9 +18,7 @@ public class Player : MonoBehaviour
     [SerializeField]
     GameObject playerAmmo; //what the player fires
     [SerializeField]
-    public Transform cameraDirection;
-    [SerializeField]
-    GameObject aimPlayer;
+    GameObject aimPlayer; //player aim that shoes on screen
     Vector3 auxAimPlayer;
 
 
@@ -33,21 +31,23 @@ public class Player : MonoBehaviour
     private void Update()
     {
         livesText.text = lives.ToString(); //print number of lives to screen
-        Debug.Log(Input.mousePosition);
-        
-        if(playerHAsWeapon == true) //slingshot complete
+       //slingshot complete and ready to use 
+        if(playerHAsWeapon == true) 
         {
-            if(Input.GetMouseButton(1)) //show aim
+            //while right button is down
+            if(Input.GetMouseButton(1)) 
             {
-                auxAimPlayer = Input.mousePosition;
-                //auxAimPlayer = aimPlayer.gameObject.transform.position;
-                auxAimPlayer.z = 0f;
-                aimPlayer.gameObject.transform.position = auxAimPlayer;
-                aimPlayer.gameObject.SetActive(true);
-                if(Input.GetMouseButtonDown(0))
+                aimPlayer.gameObject.SetActive(true); //show player aim
+                //when left button is pressed fire
+                if(Input.GetMouseButtonDown(0)) 
                 {
-                    //fires
+                    Instantiate(playerAmmo, transform.position, transform.rotation); //instatiate player shots
                 }
+            }
+            //when right button released hide aim
+            if(Input.GetMouseButtonUp(1))
+            {
+                aimPlayer.gameObject.SetActive(false);//hide aim when right button is released
             }
 
         } 
@@ -56,7 +56,7 @@ public class Player : MonoBehaviour
     //runs when the player touches something
     private void OnTriggerEnter(Collider other)
     {
-        //palyer touches a poisonous plant
+        //playerr touches a poisonous plant
         if (other.CompareTag("PoisonousPlant"))
         {
             lives--; //remove a live to the player
@@ -80,22 +80,20 @@ public class Player : MonoBehaviour
         if (other.CompareTag("WeaponPart"))
         {
             pickUpPrompt.gameObject.SetActive(true); //print pick up prompt
+            //when C is pressed
             if (Input.GetKeyDown(KeyCode.C))
             {
                 Destroy(other.gameObject); //destroy weapon part game object
-                weaponPart++;
-                pickUpPrompt.gameObject.SetActive(false);
+                weaponPart++; //add weapon part
+                pickUpPrompt.gameObject.SetActive(false); //hide pick up prompt
             }
         }
-        if(weaponPart==3) //player has all the parts and can use the weapon
+        //player has all the parts and can use the weapon
+        if(weaponPart==3) 
         {
             playerHAsWeapon = true;
         }
     }
     
-    //player fires
-    private void Fire()
-    {
-
-    }
+   
 }

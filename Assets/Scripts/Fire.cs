@@ -6,19 +6,42 @@ public class Fire : MonoBehaviour
 {
     [SerializeField]
     float force = 100f; //force to shoot the ammo
-    Quaternion direction;
-    Vector3 aux;
+
+    //[SerializeField]
+    //GameObject aimGO; //
+    
+    //[SerializeField]
+    //Transform playerTransform;
+
+    [SerializeField]
+    GameObject player;
+
+    Transform aux;
+
+    Vector3 playerTransform;
+    Vector3 aimPosition;
+    Vector3 playerPosition;
+    Vector3 direction;
 
     // Start is called before the first frame update
     void Start()
     {
-        direction = GameObject.FindWithTag("Player").GetComponent<Player>().cameraDirection.rotation; //quaternion with the current roation of the camera (where the player is looking)
-        aux = direction * Vector3.right;
-        aux.y = 0;
-        aux.z = 0;
-        GetComponent<Rigidbody>().AddForce( aux * force);
-        Debug.Log("Fire!");
-        Debug.Log(direction + " " + aux);
+        //aux = player.GetComponentInChildren<Transform>();
+        //playerPosition = playerGO.transform.position;
+        //aimPosition = aimGO.transform.position;
+        //direction = aimPosition - playerPosition;
+        
+
+        playerPosition = player.gameObject.transform.position;
+        aimPosition.x = playerPosition.x;
+        aimPosition.y = playerPosition.y + 0.8f;
+        aimPosition.z = playerPosition.z + 0.65f;
+
+        direction = aimPosition - playerPosition;
+
+        GetComponent<Rigidbody>().AddForce( direction * force);
+        Debug.Log("Fire!"+ direction);
+       
     }
 
     // Update is called once per frame
