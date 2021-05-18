@@ -7,46 +7,23 @@ public class Fire : MonoBehaviour
     [SerializeField]
     float force = 100f; //force to shoot the ammo
 
-    //[SerializeField]
-    //GameObject aimGO; //
-    
-    //[SerializeField]
-    //Transform playerTransform;
-
-    [SerializeField]
-    GameObject player;
-
-    Transform aux;
-
-    Vector3 playerTransform;
-    Vector3 aimPosition;
-    Vector3 playerPosition;
-    Vector3 direction;
-
+    private Camera fpsCam; // first person Camera
+        
     // Start is called before the first frame update
     void Start()
     {
-        //aux = player.GetComponentInChildren<Transform>();
-        //playerPosition = playerGO.transform.position;
-        //aimPosition = aimGO.transform.position;
-        //direction = aimPosition - playerPosition;
+       fpsCam = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>(); //get cam propreties
         
-
-        playerPosition = player.gameObject.transform.position;
-        aimPosition.x = playerPosition.x;
-        aimPosition.y = playerPosition.y + 0.8f;
-        aimPosition.z = playerPosition.z + 0.65f;
-
-        direction = aimPosition - playerPosition;
-
-        GetComponent<Rigidbody>().AddForce( direction * force);
-        Debug.Log("Fire!"+ direction);
-       
+       GetComponent<Rigidbody>().AddForce(fpsCam.transform.forward * force); //give the shot a force in the direction the camera is facing
     }
 
     // Update is called once per frame
     void Update()
     {
         
+    }
+    private void OnCollisionEnter(Collision other)
+    {
+        Destroy(gameObject); //destroys the shot after a collision
     }
 }

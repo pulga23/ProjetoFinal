@@ -13,19 +13,29 @@ public class Player : MonoBehaviour
     [SerializeField]
     private GameObject pickUpPrompt; //prompt the player to press key to pick up object
     [SerializeField]
+    GameObject aimPlayer; //player aim that shows on screen
+    [SerializeField]
     private int weaponPart = 0; //variable to control the number of parts of the sling shot the player has 
-    private bool playerHAsWeapon = false; //check if the player has all the parts and can use the weapom
     [SerializeField]
     GameObject playerAmmo; //what the player fires
     [SerializeField]
-    GameObject aimPlayer; //player aim that shoes on screen
-    Vector3 auxAimPlayer;
+    private float fireRate = 0.5f;
+    private float timeBetweenShots;
+
+    private bool playerHAsWeapon = false; //check if the player has all the parts and can use the weapon       
+    private bool canFire = true; //player can fire if it's been more than fireRate seconds since last shot
+    
+    Transform slingshot; //where the shot comes from
+    Vector3 auxFire;
 
 
     private void Start()
     {
         pickUpPrompt.gameObject.SetActive(false); //hide pick up prompt
-        aimPlayer.gameObject.SetActive(false); //hide aim        
+        aimPlayer.gameObject.SetActive(false); //hide aim  
+
+        timeBetweenShots = fireRate; 
+        
     }
     
     private void Update()
@@ -39,9 +49,15 @@ public class Player : MonoBehaviour
             {
                 aimPlayer.gameObject.SetActive(true); //show player aim
                 //when left button is pressed fire
-                if(Input.GetMouseButtonDown(0)) 
+                if(Input.GetMouseButtonDown(0) && canFire==true) //check if left button is pressed and if it has pass enough time since last shot 
                 {
-                    Instantiate(playerAmmo, transform.position, transform.rotation); //instatiate player shots
+                    canFire = false;
+                    slingshot = transform;
+                    auxFire = slingshot.position;
+                    auxFire.y++;
+                    slingshot.position = auxFire; //increse by one the height of the shot
+
+                    Instantiate(playerAmmo, slingshot.position, slingshot.rotation); //instatiate player shots
                 }
             }
             //when right button released hide aim
@@ -51,6 +67,16 @@ public class Player : MonoBehaviour
             }
 
         } 
+        //conts the time between shots
+        if (!canFire)
+        {
+            timeBetweenShots -= Time.deltaTime; //countdown
+            if(timeBetweenShots <=0) //when it hits zero
+            {
+                canFire = true; //set to true and it can fire again
+                timeBetweenShots = fireRate; //restart variable
+            }
+        }
     }
     
     //runs when the player touches something
