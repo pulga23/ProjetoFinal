@@ -4,10 +4,16 @@ using UnityEngine;
 
 public class Set : MonoBehaviour
 {
+    [SerializeField]
+    GameObject player;
+
     public bool setTurned = false; //public to use to control the player position
 
     Vector3 originalPostion;
+    Quaternion originalRotation;
     Vector3 auxPosition;
+    Quaternion auxRotation;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -17,7 +23,7 @@ public class Set : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.G))
+       /* if(Input.GetKeyDown(KeyCode.G))
         {
             if (setTurned == false)
             {
@@ -34,6 +40,19 @@ public class Set : MonoBehaviour
                 transform.position = originalPostion; // moves the set back to the original position
                 setTurned = false;
             }
-        }
+        }*/
+
+    }
+    public void ActivatePortal()
+    {
+        
+        auxPosition = player.gameObject.transform.position;
+        //originalRotation = player.transform.rotation;
+        //auxPosition = originalPostion;
+        //auxRotation = originalRotation;
+        auxPosition.y = -20;
+        //auxRotation
+        player.gameObject.transform.position = auxPosition;
+       // Physics.gravity = new Vector3(0, 9.8f, 0);
     }
 }

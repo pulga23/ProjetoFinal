@@ -21,21 +21,24 @@ public class Player : MonoBehaviour
     [SerializeField]
     private float fireRate = 0.5f;
     private float timeBetweenShots;
-
     private bool playerHAsWeapon = false; //check if the player has all the parts and can use the weapon       
     private bool canFire = true; //player can fire if it's been more than fireRate seconds since last shot
-    
     Transform slingshot; //where the shot comes from
     Vector3 auxFire;
+
+    [SerializeField]
+    GameObject flashlight; //player's flashlight
+    bool flashlightOn = false;
+
 
 
     private void Start()
     {
         pickUpPrompt.gameObject.SetActive(false); //hide pick up prompt
         aimPlayer.gameObject.SetActive(false); //hide aim  
-
-        timeBetweenShots = fireRate; 
+        flashlight.gameObject.SetActive(false); //turn off flashlight
         
+        timeBetweenShots = fireRate;
     }
     
     private void Update()
@@ -77,12 +80,26 @@ public class Player : MonoBehaviour
                 timeBetweenShots = fireRate; //restart variable
             }
         }
+        //using the flashlight
+        if(Input.GetMouseButtonDown(2) || Input.GetKeyDown(KeyCode.F)) //flashlight button is pressed
+        {
+            if(flashlightOn) //flashlight is on, turn it off
+            {
+                flashlight.gameObject.SetActive(false); //turns flashlight off
+                flashlightOn = false;
+            }
+            else if(!flashlightOn) //flashlight off, turn it on
+            {
+                flashlight.gameObject.SetActive(true);
+                flashlightOn = true;
+            }
+        }
     }
     
     //runs when the player touches something
     private void OnTriggerEnter(Collider other)
     {
-        //playerr touches a poisonous plant
+        //player touches a poisonous plant
         if (other.CompareTag("PoisonousPlant"))
         {
             lives--; //remove a live to the player
@@ -96,6 +113,12 @@ public class Player : MonoBehaviour
         {
             lives++; //adds a live to the player
             Destroy(other.gameObject); //destroy health kit
+        }
+        //player touches a portal
+        if(other.CompareTag("Portal"))
+        {
+           // GameObject.FindGameObjectWithTag("Set").GetComponent<Set>().ActivatePortal();
+
         }
     }
    

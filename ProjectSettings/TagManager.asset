@@ -10,6 +10,9 @@ TagManager:
   - WeaponPart
   - HealthKit
   - Aim
+  - FlashLight
+  - Ammo
+  - Portal
   layers:
   - Default
   - TransparentFX

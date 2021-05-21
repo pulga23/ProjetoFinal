@@ -16,14 +16,10 @@ public class Fire : MonoBehaviour
         
        GetComponent<Rigidbody>().AddForce(fpsCam.transform.forward * force); //give the shot a force in the direction the camera is facing
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    //when ammo collides with something
     private void OnCollisionEnter(Collision other)
     {
-        Destroy(gameObject); //destroys the shot after a collision
+        Destroy(gameObject); //destroys the ammo after a collision
+       
     }
 }
