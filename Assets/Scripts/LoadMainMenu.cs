@@ -17,20 +17,4 @@ public class LoadMainMenu : MonoBehaviour
             Application.Quit(); 
         }
     }
-   /* public void LoadTheMainMenu()
-    {
-        if(Input.GetKeyDown(KeyCode.Space))
-        {
-            SceneManager.LoadScene("MainMenu");
-
-        }
-    }
-
-    public void QuitTheGame()
-    {
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            Application.Quit();
-        }
-    }*/
 }

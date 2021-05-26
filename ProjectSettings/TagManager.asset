@@ -12,7 +12,9 @@ TagManager:
   - Aim
   - FlashLight
   - Ammo
-  - Portal
+  - Debris
+  - PortalZAxis
+  - Portal180
   layers:
   - Default
   - TransparentFX

@@ -17,8 +17,8 @@ namespace UnityStandardAssets.Characters.FirstPerson
         public bool lockCursor = true;
 
 
-        private Quaternion m_CharacterTargetRot;
-        private Quaternion m_CameraTargetRot;
+        public Quaternion m_CharacterTargetRot; //changed to public
+        public Quaternion m_CameraTargetRot; //changed to public
         private bool m_cursorIsLocked = true;
 
         public void Init(Transform character, Transform camera)
