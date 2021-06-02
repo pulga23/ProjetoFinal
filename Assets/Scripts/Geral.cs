@@ -15,17 +15,23 @@ public class Geral : MonoBehaviour
     private float seconds;
 
     [SerializeField]
-    private float releaseGasTime = 30f; //whem player has this time left gas is released to kill them  
+    private float releaseGasTime = 30f; //when player has this time left gas is released to kill them  
     private bool gasReleased = false; // variable to know if the gas has already been released
 
     [SerializeField]
     private GameObject pauseScreen; // game object to stpre the pause screen
     private bool gamePaused = false; // variable to know if the game is paused
-    
+
+    bool fog = false; //variable to control if the fog is on or off
+    float fogDensity = 0.1f; // control fog density
+    Color fogColor = new Color (0.5f, 0.5f, 0.5f, 0.5f); //variable color to keep the fog color for when we want to turn fog on
+    Color poisonColor = new Color(0.4f, 0.7f, 0.5f, 1f); //variable colour to keep the color for the poison to be when released
+        
     private void Start()
     {
         pauseScreen.gameObject.SetActive(false); //hides the pause screen 
         Time.timeScale = 1f; //start time
+        RenderSettings.fog = false; //fog off when game starts
     }
 
     void Update()
@@ -53,9 +59,16 @@ public class Geral : MonoBehaviour
                 Application.Quit();
             }
         }
+        if(Input.GetKeyDown(KeyCode.N))
+        {
+            if (fog) EndFog();
+            else if (!fog) StartFog();
+        }
+
     }
 
-   //method to count and print to unity the time remaining
+    //method to count and print to unity the time remaining
+    //adapted from https://gamedevbeginner.com/how-to-make-countdown-timer-in-unity-minutes-seconds/
     private void CountAndPrintTime()
     {
         //count the time
@@ -106,5 +119,21 @@ public class Geral : MonoBehaviour
         gamePaused = false; // game is not paused, so the variable is false
         pauseScreen.gameObject.SetActive(false); // hides pause screen
         Time.timeScale = 1f; //time starts agaisn
+    }
+
+    //method to "start" the fog - adapted from https://docs.unity3d.com/ScriptReference/RenderSettings.html
+    private void StartFog()
+    {
+        RenderSettings.fogDensity = fogDensity; //set fog density to 0.1f
+        RenderSettings.fogColor = fogColor; //change color to fog color
+        RenderSettings.fog = true; //enable fog in the lighting settings 
+        fog = true; //fog is on
+    }
+
+    //method to "end" the fog 
+    private void EndFog()
+    {
+        RenderSettings.fog = false; //disable fog in the lighting settings 
+        fog = false; //fog is off
     }
 }

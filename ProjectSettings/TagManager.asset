@@ -15,6 +15,10 @@ TagManager:
   - Debris
   - PortalZAxis
   - Portal180
+  - Exit
+  - Antidote
+  - PoisonRobot
+  - DoorExit
   layers:
   - Default
   - TransparentFX

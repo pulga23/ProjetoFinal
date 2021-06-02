@@ -32,15 +32,20 @@ public class Player : MonoBehaviour
     [SerializeField]
     GameObject flashlight; //player's flashlight
     bool flashlightOn = false;
-    
 
+    //Win the Game
+    bool hasAntidote = false; //variable to control if the player has the antidote yet
+    [SerializeField]
+    int antidotesNeeded =3;
+    int antidotesOwned = 0;
 
     private void Start()
     {
         pickUpPrompt.gameObject.SetActive(false); //hide pick up prompt
         aimPlayer.gameObject.SetActive(false); //hide aim  
         flashlight.gameObject.SetActive(false); //turn off flashlight
-        
+        GameObject.FindGameObjectWithTag("DoorExit").SetActive(true);//show exit game object so player can't escape the labyrinth without the labyrinth
+
         timeBetweenShots = fireRate;  
     }
     
@@ -54,6 +59,12 @@ public class Player : MonoBehaviour
         if (playerHAsWeapon == true) 
         {
             UseSlingShot(); //calls method that controls the slingshot
+        }
+
+        //call metehod when the player has collected the antidote 
+        if(hasAntidote)
+        {
+            GameObject.FindGameObjectWithTag("DoorExit").SetActive(false);//hide exit game object so plater can escape the labyrinth
         }
        
     }
@@ -130,6 +141,21 @@ public class Player : MonoBehaviour
                 GameObject.FindGameObjectWithTag("Set").GetComponent<Geral>().GameOver(); //start Game Over method when player has no lives left
             }
         }
+        //player enters robot poisonous zone
+        if(other.CompareTag("PoisonRobot"))
+        {
+            lives--;
+            if (lives <= 0)
+            {
+                GameObject.FindGameObjectWithTag("Set").GetComponent<Geral>().GameOver(); //start Game Over method when player has no lives left
+            }
+
+        }
+        //player reaches the exit zone
+        if(other.CompareTag("Exit"))
+        {
+            //call game win scene 
+        }
     }
     //player collects items
     private void OnTriggerStay(Collider other)
@@ -151,8 +177,36 @@ public class Player : MonoBehaviour
         {
             playerHAsWeapon = true;
         }
+        //player collects antidote
+        if(other.CompareTag("Antidote"))
+        {
+            pickUpPrompt.gameObject.SetActive(true); //print pick up prompt
+            if (Input.GetKeyDown(KeyCode.C))
+            {
+                Destroy(other.gameObject); //destroy antidote game object- this destorys the poison shpere too because controlling the turning on and off is the antidote script that is in the antidote game object
+                antidotesOwned++; //add weapon part
+                pickUpPrompt.gameObject.SetActive(false); //hide pick up prompt
+                if(antidotesOwned==antidotesNeeded)
+                {
+                    hasAntidote = true;
+                }
+            }
+
+        }
     }
-     //method to control the flashlight
+    private void OnTriggerExit(Collider other)
+    {
+        if(other.CompareTag("WeaponPart"))
+        {
+            pickUpPrompt.gameObject.SetActive(false); //hides pick up prompt even if player doesn't collect weapon part
+        }
+        if(other.CompareTag("Antidote"))
+        {
+            pickUpPrompt.gameObject.SetActive(false); //hides pick up prompt even if player doesn't collect antidote
+
+        }
+    }
+    //method to control the flashlight
     private void Flashlight()
     {
         if (Input.GetMouseButtonDown(2) || Input.GetKeyDown(KeyCode.F)) //flashlight button is pressed

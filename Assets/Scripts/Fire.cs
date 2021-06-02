@@ -14,7 +14,7 @@ public class Fire : MonoBehaviour
     {
        fpsCam = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>(); //get cam propreties
         
-       GetComponent<Rigidbody>().AddForce(fpsCam.transform.forward * force); //give the shot a force in the direction the camera is facing
+       GetComponent<Rigidbody>().AddForce(fpsCam.transform.forward * force); //give the shot a force in the direction the camera is facing - adapted from https://learn.unity.com/tutorial/let-s-try-shooting-with-raycasts#5c7f8528edbc2a002053b468
     }
     //when ammo collides with something
     private void OnCollisionEnter(Collision other)
